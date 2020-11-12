@@ -1,0 +1,24 @@
+version: '3.4'
+
+x-defaults: &defaults
+  restart: unless-stopped
+  networks:
+    - pypi
+  env_file: .env
+
+volumes:
+  pypi-repo:
+
+networks:
+   pypi:
+     driver: bridge
+
+services:
+  pypi-server:
+    <<: *defaults
+    build:
+      context: .
+    ports: 
+    - "9090:8080"
+    volumes:
+    - pypi-repo:/data/packages
